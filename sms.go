@@ -23,11 +23,9 @@ func (sms *SmsClient) Send(mobile string, message string) error {
 	}
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
-
 	data := &Error{}
 
-	if err := decoder.Decode(data); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(data); err != nil {
 		return err
 	}
 	return data.Check()
@@ -46,9 +44,7 @@ func (sms *SmsClient) Status() (int, error) {
 		Deposit int `json:",string"`
 	}{}
 
-	decoder := json.NewDecoder(resp.Body)
-
-	if err := decoder.Decode(data); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(data); err != nil {
 		return 0, err
 	}
 

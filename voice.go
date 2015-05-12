@@ -23,9 +23,8 @@ func (voice *VoiceClient) Verify(mobile string, code string) error {
 
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
 	data := &Error{}
-	if err := decoder.Decode(data); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(data); err != nil {
 		return err
 	}
 
@@ -42,14 +41,12 @@ func (voice *VoiceClient) Status() (int, error) {
 
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
-
 	data := &struct {
 		Error
 		Deposit int `json:",string"`
 	}{}
 
-	if err := decoder.Decode(data); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(data); err != nil {
 		return 0, err
 	}
 
